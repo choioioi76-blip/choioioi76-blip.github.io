@@ -1,13 +1,13 @@
 {
-  "name": "Health App",
-  "short_name": "HealthApp",
+  "name": "GoalTrack",
+  "short_name": "GoalTrack",
   "start_url": "/health-app/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#ffffff",
   "icons": [
     {
-      "src": "/health-app/Gemini_Generated_Image_2b2aea2b2aea2b2a.png",
+      "src": "Gemini_Generated_Image_2b2aea2b2aea2b2a.png",
       "sizes": "512x512",
       "type": "image/png"
     }
