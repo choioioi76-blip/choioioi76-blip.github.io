@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
- <link rel="manifest" href="data:application/manifest+json;utf8,%7B%22name%22%3A%22GoalTrack%22%2C%22short_name%22%3A%22GoalTrack%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23ffffff%22%2C%22theme_color%22%3A%22%233498db%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22https%3A%2F%2Fchoioioi76-blip.github.io%2Fhealth-app%2FGemini_Generated_Image_2b2aea2b2aea2b2a.png%22%2C%22sizes%22%3A%22192x192%22%2C%22type%22%3A%22image%2Fpng%22%7D%2C%7B%22src%22%3A%22https%3A%2F%2Fchoioioi76-blip.github.io%2Fhealth-app%2FGemini_Generated_Image_2b2aea2b2aea2b2a.png%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image%2Fpng%22%7D%5D%7D">
+  <meta charset="UTF-8">
+  <link rel="manifest" href="./manifest.json">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>건강행동 실천 앱</title>
+  
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
@@ -32,7 +34,7 @@
     .auto-login input { width: 22px; height: 22px; accent-color: #3498db; }
     .auto-login span { font-size: 1.1rem; font-weight: 600; color: #555; }
     
-    /* 버튼 스타일 (어르신용 큼직한 버튼) */
+    /* 버튼 스타일 */
     .btn-main { width: 100%; padding: 18px; background-color: #3498db; color: white; border: none; border-radius: 16px; font-size: 1.3rem; font-weight: bold; cursor: pointer; transition: 0.2s; }
     .btn-main:active { background-color: #2980b9; transform: scale(0.98); }
     
@@ -77,15 +79,7 @@
   </style>
 </head>
 <body>
-<script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/sw.js')
-        .then(() => console.log('서비스 워커 등록 성공!'))
-        .catch((err) => console.error('서비스 워커 등록 실패:', err));
-    });
-  }
-</script>
+
   <div class="app-container">
     
     <!-- 1. 로그인 화면 -->
@@ -168,6 +162,15 @@
   </div>
 
   <script>
+    // 서비스 워커 등록
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then(() => console.log('서비스 워커 등록 성공!'))
+          .catch((err) => console.error('서비스 워커 등록 실패:', err));
+      });
+    }
+
     // Firebase 설정
     const firebaseConfig = {
       apiKey: "AIzaSyDQpqwltPiJtcMMrmA8TQAks1b3RbR_lvA",
@@ -279,7 +282,7 @@
         let endDate = typeof t === 'object' ? t.endDate : '';
         let active = typeof t === 'object' ? (t.active !== undefined ? t.active : true) : true;
 
-        // 🌟 기간 필터링: 활성 상태이면서 오늘 날짜가 시작일~종료일 사이에 있는지 확인
+        // 기간 필터링
         if (!active) return;
         if (startDate && todayStr < startDate) return;
         if (endDate && todayStr > endDate) return;
@@ -344,7 +347,7 @@
       }
     }
 
-    // 4. Responses 노드에 저장 (관리자 프로그램 자동 연동)
+    // 4. Responses 노드에 저장
     function submitResponse() {
       const answer = document.getElementById('answerInput').value.trim();
       const targetTitle = document.getElementById('detailTargetTitle').innerText;
