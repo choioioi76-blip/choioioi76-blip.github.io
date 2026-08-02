@@ -13,16 +13,15 @@ firebase.initializeApp({
 
 const messaging = firebase.messaging();
 
-// 백그라운드 푸시 수신 처리
-messaging.onBackgroundMessage((payload) => {
-  console.log('[firebase-messaging-sw.js] 백그라운드 수신:', payload);
-  
+// 백그라운드 푸시 수신 처리 (관리자가 보낸 입력값 그대로 알림 표출)
+messaging.setBackgroundMessageHandler((payload) => {
+  console.log('[firebase-messaging-sw.js] 백그라운드 메시지 수신:', payload);
+
   const notificationTitle = payload.notification ? payload.notification.title : '건강행동 실천 알림';
   const notificationOptions = {
     body: payload.notification ? payload.notification.body : '',
-    icon: './MHRL%20icon.png',
-    badge: './MHRL%20icon.png'
+    icon: './MHRL%20icon.png'
   };
 
-  self.registration.showNotification(notificationTitle, notificationOptions);
+  return self.registration.showNotification(notificationTitle, notificationOptions);
 });
