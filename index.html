@@ -9,7 +9,7 @@
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-  <!-- FCM 푸시 알림용 SDK 추가 -->
+  <!-- FCM 푸시 알림용 SDK -->
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-messaging.js"></script>
   
   <style>
@@ -164,24 +164,11 @@
   </div>
 
   <script>
-    // 웹/앱 접속 시 알림 권한 요청 팝업 띄우기
-    window.addEventListener('load', () => {
-      if ('Notification' in window) {
-        Notification.requestPermission().then((permission) => {
-          if (permission === 'granted') {
-            console.log('알림 권한이 허용되었습니다.');
-          } else {
-            console.log('알림 권한이 거부되었습니다.');
-          }
-        });
-      }
-    });
-
-    // 서비스 워커 등록 (firebase-messaging-sw.js)
+    // 서비스 워커 등록
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('./firebase-messaging-sw.js')
-          .then(() => console.log('서비스 워커 등록 성공!'))
+          .then((reg) => console.log('서비스 워커 등록 성공:', reg.scope))
           .catch((err) => console.error('서비스 워커 등록 실패:', err));
       });
     }
@@ -199,32 +186,46 @@
 
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
+    const messaging = firebase.messaging();
 
-    // 1. VAPID Key 정의
+    // VAPID Key 정의
     const VAPID_KEY = "BIefkNza3itCRQ9WRPw51-b5H8ehkC8tQbcqI_YR5e97IqfD6w9TBOkp1X8A_BE7-vg14cBXAkIJyrwR_T-DZ48";
 
-    // 2. FCM 토큰 발급 및 Firebase DB 저장 함수
+    // FCM 토큰 발급 및 Firebase DB 저장 함수
     function requestAndSaveFcmToken(userCode) {
-      if (!('Notification' in window) || !('serviceWorker' in navigator)) return;
+      if (!('Notification' in window) || !('serviceWorker' in navigator)) {
+        console.warn('이 브라우저는 알림 또는 서비스 워커를 지원하지 않습니다.');
+        return;
+      }
 
       Notification.requestPermission().then((permission) => {
         if (permission === 'granted') {
-          const messaging = firebase.messaging();
-          
           messaging.getToken({ vapidKey: VAPID_KEY }).then((currentToken) => {
             if (currentToken) {
               console.log('발급된 FCM 토큰:', currentToken);
-              // DB의 Users/개인코드/fcmToken 노드에 저장
-              db.ref('Users/' + userCode + '/fcmToken').set(currentToken);
+              // DB의 Users/개인코드/fcmToken 경로에 저장
+              db.ref('Users/' + userCode + '/fcmToken').set(currentToken)
+                .then(() => console.log('DB에 FCM 토큰 저장 성공!'))
+                .catch((err) => console.error('DB 저장 실패:', err));
             } else {
-              console.log('토큰을 가져올 수 없습니다.');
+              console.log('토큰을 가져올 수 없습니다. 권한을 확인하세요.');
             }
           }).catch((err) => {
             console.error('FCM 토큰 발급 중 오류:', err);
           });
+        } else {
+          console.warn('알림 권한이 거부되었습니다.');
         }
       });
     }
+
+    // 앱이 화면에 떠 있을 때(포그라운드) 푸시 알림 처리
+    messaging.onMessage((payload) => {
+      console.log('포그라운드 메시지 수신:', payload);
+      const title = payload.notification ? payload.notification.title : '알림';
+      const body = payload.notification ? payload.notification.body : '';
+      alert(`[${title}]\n${body}`);
+    });
 
     // 앱 상태 변수
     let currentUser = null;
