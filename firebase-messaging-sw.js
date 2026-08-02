@@ -1,25 +1,27 @@
-const CACHE_NAME = 'goaltrack-v1';
-const ASSETS = [
-  './',
-  './index.html',
-  './manifest.json',
-  './MHRL%20icon.png'
-];
+importScripts('https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js');
+importScripts('https://www.gstatic.com/firebasejs/9.22.0/firebase-messaging-compat.js');
 
-// 서비스 워커 설치 및 파일 캐싱
-self.addEventListener('install', (e) => {
-  e.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(ASSETS);
-    })
-  );
+// 1. Firebase 설정 (본인 Firebase 콘솔의 프로젝트 설정 값)
+firebase.initializeApp({
+  apiKey: "본인의_API_KEY",
+  authDomain: "본인의_PROJECT_ID.firebaseapp.com",
+  projectId: "본인의_PROJECT_ID",
+  storageBucket: "본인의_PROJECT_ID.appspot.com",
+  messagingSenderId: "본인의_SENDER_ID",
+  appId: "본인의_APP_ID"
 });
 
-// 오프라인 상태 및 네트워크 요청 처리
-self.addEventListener('fetch', (e) => {
-  e.respondWith(
-    caches.match(e.request).then((res) => {
-      return res || fetch(e.request);
-    })
-  );
+const messaging = firebase.messaging();
+
+// 2. 백그라운드 상태(앱이 꺼져있거나 화면이 꺼졌을 때) 푸시 알림 수신
+messaging.onBackgroundMessage((payload) => {
+  console.log('[firebase-messaging-sw.js] 백그라운드 메시지 수신:', payload);
+
+  const notificationTitle = payload.notification.title || 'GoalTrack 알림';
+  const notificationOptions = {
+    body: payload.notification.body || '',
+    icon: '/MHRL%20icon.png' // 앱 아이콘 경로
+  };
+
+  self.registration.showNotification(notificationTitle, notificationOptions);
 });
