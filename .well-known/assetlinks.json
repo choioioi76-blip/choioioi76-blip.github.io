@@ -1,8 +1,8 @@
 [{
-      "relation": ["delegate_permission/common.handle_all_urls"],
-      "target": {
-        "namespace": "android_app",
-        "package_name": "io.github.choioioi76_blip.twa",
-        "sha256_cert_fingerprints": ["1E:A5:35:0B:3B:E2:13:7D:92:82:E9:9D:E6:50:F0:BC:D7:14:55:07:D6:A8:15:5E:EA:8B:36:57:6B:F1:5A:37"]
-      }
-    }]
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "io.github.choioioi76_blip.twa",
+    "sha256_cert_fingerprints": ["BC:0A:1C:CD:2A:E8:C4:68:CA:44:F7:03:B1:1C:91:11:33:58:E8:27:66:00:0B:7A:28:9C:D3:72:AE:8E:CB:97"]
+  }
+}]
