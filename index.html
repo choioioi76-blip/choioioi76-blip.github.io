@@ -219,12 +219,21 @@
       });
     }
 
-    // 앱이 화면에 떠 있을 때(포그라운드) 푸시 알림 처리
+    // 앱이 화면에 떠 있을 때(포그라운드) 관리자가 보낸 푸시 알림 수신
     messaging.onMessage((payload) => {
       console.log('포그라운드 메시지 수신:', payload);
-      const title = payload.notification ? payload.notification.title : '알림';
+      const title = payload.notification ? payload.notification.title : '건강행동 실천 알림';
       const body = payload.notification ? payload.notification.body : '';
-      alert(`[${title}]\n${body}`);
+      
+      // 상단 시스템 알림 팝업 띄우기 (권한 허용 시)
+      if (Notification.permission === 'granted') {
+        new Notification(title, {
+          body: body,
+          icon: './MHRL%20icon.png' // 앱 아이콘 경로
+        });
+      } else {
+        alert(`[${title}]\n${body}`);
+      }
     });
 
     // 앱 상태 변수
