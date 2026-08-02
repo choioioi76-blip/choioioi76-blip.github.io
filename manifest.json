@@ -2,10 +2,12 @@
   "name": "GoalTrack",
   "short_name": "GoalTrack",
   "description": "목표를 효율적으로 관리하고 기록하는 앱입니다.",
-  "start_url": "./",
+  "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#ffffff",
-  "theme_color": "#000000",
+  "theme_color": "#ffffff",
   "gcm_sender_id": "204480953444",
   "icons": [
     {
