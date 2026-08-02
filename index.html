@@ -162,10 +162,23 @@
   </div>
 
   <script>
-    // 서비스 워커 등록
+    // 웹/앱 접속 시 알림 권한 요청 팝업 띄우기
+    window.addEventListener('load', () => {
+      if ('Notification' in window) {
+        Notification.requestPermission().then((permission) => {
+          if (permission === 'granted') {
+            console.log('알림 권한이 허용되었습니다.');
+          } else {
+            console.log('알림 권한이 거부되었습니다.');
+          }
+        });
+      }
+    });
+
+    // 서비스 워커 등록 (firebase-messaging-sw.js)
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js')
+        navigator.serviceWorker.register('./firebase-messaging-sw.js')
           .then(() => console.log('서비스 워커 등록 성공!'))
           .catch((err) => console.error('서비스 워커 등록 실패:', err));
       });
