@@ -9,75 +9,150 @@
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-  <!-- FCM 푸시 알림용 SDK -->
   <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-messaging.js"></script>
   
+  <!-- Pretendard & FontAwesome Icons -->
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', sans-serif; -webkit-tap-highlight-color: transparent; }
-    body { background-color: #f4f7f9; color: #333; padding: 20px; min-height: 100vh; display: flex; justify-content: center; align-items: center; }
-    
-    .app-container { width: 100%; max-width: 480px; background: #ffffff; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); padding: 25px; overflow: hidden; }
-    
-    /* Screen 공통 */
-    .screen { display: none; }
-    .screen.active { display: block; }
-    
-    /* Screen 1: 로그인 */
-    .login-header { text-align: center; margin-bottom: 30px; margin-top: 10px; }
-    .login-header h2 { font-size: 1.8rem; color: #2c3e50; font-weight: 800; }
-    .login-header p { font-size: 1rem; color: #7f8c8d; margin-top: 5px; }
-    
-    .input-group { margin-bottom: 15px; }
-    .input-group label { display: block; font-size: 1.05rem; font-weight: bold; margin-bottom: 6px; color: #34495e; }
-    .input-group input { width: 100%; padding: 16px; border: 2px solid #e2e8f0; border-radius: 14px; font-size: 1.1rem; outline: none; transition: 0.2s; }
-    .input-group input:focus { border-color: #3498db; }
-    
-    .auto-login { display: flex; align-items: center; gap: 10px; margin: 20px 0; cursor: pointer; }
-    .auto-login input { width: 22px; height: 22px; accent-color: #3498db; }
-    .auto-login span { font-size: 1.1rem; font-weight: 600; color: #555; }
-    
-    /* 버튼 스타일 */
-    .btn-main { width: 100%; padding: 18px; background-color: #3498db; color: white; border: none; border-radius: 16px; font-size: 1.3rem; font-weight: bold; cursor: pointer; transition: 0.2s; }
-    .btn-main:active { background-color: #2980b9; transform: scale(0.98); }
-    
-    /* Screen 2: 메인 (홈) */
-    .user-welcome { background: linear-gradient(135deg, #2f80ed, #56ccf2); color: white; padding: 20px; border-radius: 18px; margin-bottom: 20px; }
-    .user-welcome h3 { font-size: 1.4rem; font-weight: bold; }
-    .user-welcome p { font-size: 1rem; opacity: 0.9; margin-top: 4px; }
-    
-    /* 원형 프로그레스 바 카드 */
-    .progress-card { background: #fff; border: 2px solid #edf2f7; border-radius: 20px; padding: 20px; text-align: center; margin-bottom: 25px; box-shadow: 0 4px 12px rgba(0,0,0,0.03); }
-    .progress-card h4 { font-size: 1.1rem; color: #4a5568; margin-bottom: 15px; }
-    
-    .circle-chart-container { position: relative; width: 150px; height: 150px; margin: 0 auto 10px; }
-    .circle-chart { width: 100%; height: 100%; transform: rotate(-90deg); }
-    .circle-bg { fill: none; stroke: #edf2f7; stroke-width: 3.8; }
-    .circle-progress { fill: none; stroke: #27ae60; stroke-width: 3.8; stroke-linecap: round; transition: stroke-dasharray 0.5s ease; }
-    .percentage-text { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 1.6rem; font-weight: 800; color: #2d3748; }
-    
-    .target-list { display: flex; flex-direction: column; gap: 12px; }
-    .target-item { background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 16px; padding: 18px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: 0.2s; }
-    .target-item:active { background: #edf2f7; }
-    .target-item.completed { border-color: #2ecc71; background-color: #e8f8f5; }
-    .target-info h5 { font-size: 1.2rem; color: #2d3748; font-weight: 700; }
-    .badge { padding: 6px 12px; border-radius: 20px; font-size: 0.95rem; font-weight: bold; }
-    .badge-pending { background: #feebc8; color: #c05621; }
-    .badge-done { background: #c6f6d5; color: #22543d; }
+    :root {
+      --primary: #4F46E5;
+      --primary-light: #EEF2FF;
+      --primary-dark: #3730A3;
+      --success: #10B981;
+      --success-light: #ECFDF5;
+      --warning: #F59E0B;
+      --warning-light: #FFFBEB;
+      --danger: #EF4444;
+      --danger-light: #FEF2F2;
+      --bg-main: #F8FAFC;
+      --card-bg: #FFFFFF;
+      --text-main: #0F172A;
+      --text-sub: #64748B;
+      --border: #E2E8F0;
+      --radius-lg: 28px;
+      --radius-md: 18px;
+      --radius-sm: 12px;
+      --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+      --shadow-md: 0 10px 25px -5px rgba(79, 70, 229, 0.1), 0 8px 10px -6px rgba(79, 70, 229, 0.05);
+    }
 
-    /* Screen 3: 질문 및 응답 제출 */
-    .header-bar { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
-    .btn-back { background: #edf2f7; border: none; padding: 10px 16px; border-radius: 12px; font-size: 1.1rem; font-weight: bold; cursor: pointer; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
+    body { background-color: #E2E8F0; color: var(--text-main); min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 0; }
     
-    .question-card { background: #f8fafc; border-radius: 18px; padding: 20px; margin-bottom: 20px; border: 1px solid #e2e8f0; }
-    .question-card h3 { font-size: 1.3rem; color: #2d3748; margin-bottom: 10px; }
-    .question-card p { font-size: 1.1rem; color: #4a5568; font-weight: 600; }
+    .app-container { 
+      width: 100%; 
+      max-width: 440px; 
+      height: 100vh;
+      max-height: 920px;
+      background: var(--bg-main); 
+      border-radius: var(--radius-lg); 
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15); 
+      position: relative;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    @media (max-width: 480px) {
+      .app-container { border-radius: 0; max-height: 100vh; }
+    }
+
+    .screen { display: none; padding: 24px; animation: fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
+    .screen.active { display: block; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
     
-    .status-select { display: flex; gap: 10px; margin-bottom: 20px; }
-    .status-btn { flex: 1; padding: 18px 10px; border: 2px solid #cbd5e0; border-radius: 16px; background: white; font-size: 1.15rem; font-weight: bold; color: #4a5568; cursor: pointer; text-align: center; }
-    .status-btn.selected-success { border-color: #2ecc71; background: #e8f8f5; color: #27ae60; }
-    .status-btn.selected-fail { border-color: #e74c3c; background: #fde2e2; color: #c0392b; }
+    /* 1. 로그인 화면 */
+    .login-wrapper { display: flex; flex-direction: column; height: 100%; justify-content: center; padding-top: 20px; }
+    .brand-icon { width: 68px; height: 68px; background: linear-gradient(135deg, var(--primary), #818CF8); border-radius: 22px; display: flex; align-items: center; justify-content: center; color: white; font-size: 2rem; margin-bottom: 20px; box-shadow: var(--shadow-md); }
+    .login-header h2 { font-size: 1.8rem; color: var(--text-main); font-weight: 800; letter-spacing: -0.5px; }
+    .login-header p { font-size: 0.98rem; color: var(--text-sub); margin-top: 6px; margin-bottom: 30px; }
     
-    textarea { width: 100%; height: 110px; padding: 15px; border: 2px solid #e2e8f0; border-radius: 14px; font-size: 1.1rem; outline: none; margin-bottom: 20px; resize: none; }
+    .input-group { margin-bottom: 16px; }
+    .input-group label { display: block; font-size: 0.88rem; font-weight: 700; margin-bottom: 8px; color: var(--text-main); }
+    .input-group .input-wrapper { position: relative; }
+    .input-group .input-wrapper i { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--text-sub); font-size: 1.1rem; }
+    .input-group input { width: 100%; padding: 16px 16px 16px 48px; border: 1.5px solid var(--border); border-radius: var(--radius-md); font-size: 1rem; outline: none; transition: all 0.2s; background: white; }
+    .input-group input:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1); }
+    
+    .auto-login { display: flex; align-items: center; gap: 10px; margin: 20px 0 30px; cursor: pointer; user-select: none; }
+    .auto-login input { width: 20px; height: 20px; accent-color: var(--primary); border-radius: 6px; cursor: pointer; }
+    .auto-login span { font-size: 0.95rem; font-weight: 600; color: var(--text-sub); }
+    
+    .btn-main { width: 100%; padding: 18px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: white; border: none; border-radius: var(--radius-md); font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: all 0.2s; box-shadow: var(--shadow-md); display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .btn-main:active { transform: scale(0.98); opacity: 0.95; }
+    
+    /* 2. 메인 화면 */
+    .user-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+    .user-profile h3 { font-size: 1.4rem; font-weight: 800; color: var(--text-main); }
+    .user-profile p { font-size: 0.9rem; color: var(--text-sub); margin-top: 2px; }
+    .btn-icon-logout { background: white; border: 1.5px solid var(--border); width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--text-sub); font-size: 1.1rem; cursor: pointer; transition: 0.2s; }
+    .btn-icon-logout:active { background: var(--border); }
+
+    /* 대시보드 카드 */
+    .dashboard-card { background: linear-gradient(135deg, #4F46E5, #3730A3); border-radius: var(--radius-lg); padding: 24px; color: white; margin-bottom: 28px; box-shadow: var(--shadow-md); position: relative; overflow: hidden; }
+    .dashboard-card::after { content: ''; position: absolute; right: -20px; bottom: -20px; width: 140px; height: 140px; background: rgba(255, 255, 255, 0.08); border-radius: 50%; pointer-events: none; }
+    
+    .dashboard-flex { display: flex; align-items: center; justify-content: space-between; }
+    .progress-info h4 { font-size: 0.95rem; opacity: 0.85; font-weight: 500; margin-bottom: 8px; }
+    .progress-info .percent { font-size: 2.3rem; font-weight: 800; line-height: 1; }
+    .progress-info .status-text { font-size: 0.85rem; margin-top: 10px; background: rgba(255, 255, 255, 0.2); padding: 6px 12px; border-radius: 20px; display: inline-block; backdrop-filter: blur(4px); font-weight: 600; }
+
+    .circle-chart-container { position: relative; width: 110px; height: 110px; }
+    .circle-chart { width: 100%; height: 100%; transform: rotate(-90deg); }
+    .circle-bg { fill: none; stroke: rgba(255, 255, 255, 0.2); stroke-width: 4; }
+    .circle-progress { fill: none; stroke: #34D399; stroke-width: 4; stroke-linecap: round; transition: stroke-dasharray 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
+    .circle-inner-icon { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 1.6rem; color: white; }
+
+    /* 목표 리스트 */
+    .section-title { font-size: 1.15rem; font-weight: 800; margin-bottom: 16px; color: var(--text-main); display: flex; align-items: center; justify-content: space-between; }
+    .section-title span { font-size: 0.85rem; color: var(--primary); font-weight: 700; background: var(--primary-light); padding: 4px 10px; border-radius: 12px; }
+
+    .target-list { display: flex; flex-direction: column; gap: 14px; }
+    .target-item { background: white; border: 1.5px solid var(--border); border-radius: var(--radius-md); padding: 18px 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; transition: all 0.2s ease; box-shadow: var(--shadow-sm); }
+    .target-item:hover { border-color: var(--primary); transform: translateY(-2px); }
+    
+    /* 목표 아이템 상태 스타일 */
+    .target-item.status-done { border-color: rgba(16, 185, 129, 0.4); background: #F0FDF4; }
+    .target-item.status-half { border-color: rgba(245, 158, 11, 0.4); background: #FFFBEB; }
+    .target-item.status-fail { border-color: rgba(239, 68, 68, 0.4); background: #FEF2F2; }
+
+    .target-left { display: flex; align-items: center; gap: 14px; }
+    .status-icon-circle { width: 32px; height: 32px; border-radius: 50%; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; transition: 0.2s; font-size: 0.95rem; font-weight: 800; color: var(--text-sub); }
+    
+    .target-item.status-done .status-icon-circle { background: var(--success); border-color: var(--success); color: white; }
+    .target-item.status-half .status-icon-circle { background: var(--warning); border-color: var(--warning); color: white; }
+    .target-item.status-fail .status-icon-circle { background: var(--danger); border-color: var(--danger); color: white; }
+
+    .target-info h5 { font-size: 1.05rem; color: var(--text-main); font-weight: 700; }
+    .target-info p { font-size: 0.82rem; color: var(--text-sub); margin-top: 2px; }
+
+    /* 3. 질문 및 응답 제출 화면 */
+    .header-bar { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; }
+    .btn-back { background: white; border: 1.5px solid var(--border); width: 42px; height: 42px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; cursor: pointer; transition: 0.2s; }
+    .header-bar h3 { font-size: 1.2rem; font-weight: 800; color: var(--text-main); }
+
+    .question-card { background: white; border-radius: var(--radius-md); padding: 22px; margin-bottom: 20px; border: 1.5px solid var(--border); box-shadow: var(--shadow-sm); }
+    .question-card .tag { font-size: 0.75rem; font-weight: 800; color: var(--primary); text-transform: uppercase; letter-spacing: 0.5px; background: var(--primary-light); padding: 4px 8px; border-radius: 6px; display: inline-block; margin-bottom: 10px; }
+    .question-card h4 { font-size: 1.25rem; color: var(--text-main); font-weight: 800; margin-bottom: 8px; }
+    .question-card p { font-size: 0.98rem; color: var(--text-sub); line-height: 1.5; }
+
+    /* 3가지 대표 선택지 버튼 */
+    .status-select { display: flex; gap: 8px; margin-bottom: 20px; }
+    .status-btn { flex: 1; padding: 16px 8px; border: 2px solid var(--border); border-radius: var(--radius-md); background: white; font-size: 0.92rem; font-weight: 700; color: var(--text-sub); cursor: pointer; text-align: center; transition: 0.2s; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+    .status-btn i { font-size: 1.3rem; }
+    
+    .status-btn.selected-success { border-color: var(--success); background: var(--success-light); color: var(--success); }
+    .status-btn.selected-warning { border-color: var(--warning); background: var(--warning-light); color: var(--warning); }
+    .status-btn.selected-fail { border-color: var(--danger); background: var(--danger-light); color: var(--danger); }
+
+    textarea { width: 100%; height: 130px; padding: 16px; border: 1.5px solid var(--border); border-radius: var(--radius-md); font-size: 0.98rem; outline: none; margin-bottom: 24px; resize: none; background: white; transition: 0.2s; }
+    textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1); }
   </style>
 </head>
 <body>
@@ -86,79 +161,137 @@
     
     <!-- 1. 로그인 화면 -->
     <div id="screen-login" class="screen active">
-      <div class="login-header">
-        <h2>건강행동 실천</h2>
-        <p>개인 정보를 입력해 주세요</p>
-      </div>
-      <div class="input-group">
-        <label>개인코드</label>
-        <input type="text" id="loginCode" placeholder="예: 260730000001">
-      </div>
-      <div class="input-group">
-        <label>성명</label>
-        <input type="text" id="loginName" placeholder="예: 홍길동">
-      </div>
-      <div class="input-group">
-        <label>전화번호</label>
-        <input type="text" id="loginPhone" placeholder="숫자만 입력 (예: 01012345678)">
-      </div>
-      <div class="input-group">
-        <label>생년월일</label>
-        <input type="text" id="loginBirth" placeholder="8자리 (예: 20000101)">
-      </div>
-      <label class="auto-login">
-        <input type="checkbox" id="autoLoginCheck" checked>
-        <span>자동 로그인 유지</span>
-      </label>
-      <button class="btn-main" onclick="handleLogin()">로그인</button>
-    </div>
-
-    <!-- 2. 메인 화면 (목표 & 프로그레스 바) -->
-    <div id="screen-main" class="screen">
-      <div class="user-welcome">
-        <h3 id="welcomeText">홍길동님, 안녕하세요! 😊</h3>
-        <p id="todayDateText">2026년 7월 30일 목요일</p>
-      </div>
-
-      <div class="progress-card">
-        <h4>오늘의 목표 달성률</h4>
-        <div class="circle-chart-container">
-          <svg class="circle-chart" viewBox="0 0 36 36">
-            <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-            <path id="circleProgress" class="circle-progress" stroke-dasharray="0, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
-          </svg>
-          <div class="percentage-text" id="progressPercent">0%</div>
+      <div class="login-wrapper">
+        <div class="brand-icon">
+          <i class="fa-solid fa-heart-pulse"></i>
         </div>
-        <p id="progressSummary" style="font-size: 1.1rem; font-weight: bold; color: #2d3748;">0개 중 0개 완료</p>
+        <div class="login-header">
+          <h2>건강행동 실천</h2>
+          <p>오늘의 건강한 습관을 기록해 보세요</p>
+        </div>
+        
+        <div class="input-group">
+          <label>개인코드</label>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-id-card"></i>
+            <input type="text" id="loginCode" placeholder="예: 260730000001">
+          </div>
+        </div>
+        
+        <div class="input-group">
+          <label>성명</label>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-user"></i>
+            <input type="text" id="loginName" placeholder="예: 홍길동">
+          </div>
+        </div>
+        
+        <div class="input-group">
+          <label>전화번호</label>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-phone"></i>
+            <input type="text" id="loginPhone" placeholder="숫자만 입력 (예: 01012345678)">
+          </div>
+        </div>
+        
+        <div class="input-group">
+          <label>생년월일</label>
+          <div class="input-wrapper">
+            <i class="fa-solid fa-calendar"></i>
+            <input type="text" id="loginBirth" placeholder="8자리 (예: 20000101)">
+          </div>
+        </div>
+        
+        <label class="auto-login">
+          <input type="checkbox" id="autoLoginCheck" checked>
+          <span>로그인 상태 유지</span>
+        </label>
+        
+        <button class="btn-main" onclick="handleLogin()">
+          <span>시작하기</span>
+          <i class="fa-solid fa-arrow-right"></i>
+        </button>
       </div>
-
-      <h4 style="font-size: 1.2rem; margin-bottom: 12px; color: #2d3748;">오늘의 목표 목록</h4>
-      <div id="targetListArea" class="target-list">
-        <!-- 목표 아이템들이 동적으로 추가됩니다 -->
-      </div>
-      
-      <button onclick="logout()" style="width:100%; margin-top:25px; background:none; border:none; color:#a0aec0; font-size:0.95rem; text-decoration:underline; cursor:pointer;">로그아웃</button>
     </div>
 
-    <!-- 3. 질문 및 응답 제출 화면 -->
+    <!-- 2. 메인 화면 -->
+    <div id="screen-main" class="screen">
+      <div class="user-header">
+        <div class="user-profile">
+          <h3 id="welcomeText">홍길동님, 반가워요! 👋</h3>
+          <p id="todayDateText">2026년 7월 30일 목요일</p>
+        </div>
+        <button class="btn-icon-logout" onclick="logout()" title="로그아웃">
+          <i class="fa-solid fa-right-from-bracket"></i>
+        </button>
+      </div>
+
+      <!-- 프로그레스 대시보드 -->
+      <div class="dashboard-card">
+        <div class="dashboard-flex">
+          <div class="progress-info">
+            <h4>오늘의 목표 달성률</h4>
+            <div class="percent" id="progressPercent">0%</div>
+            <div class="status-text" id="progressSummary">0개 성공 · 0개 보통 · 0개 실패</div>
+          </div>
+          <div class="circle-chart-container">
+            <svg class="circle-chart" viewBox="0 0 36 36">
+              <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+              <path id="circleProgress" class="circle-progress" stroke-dasharray="0, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+            </svg>
+            <i class="fa-solid fa-fire circle-inner-icon"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- 목표 목록 섹션 -->
+      <div class="section-title">
+        오늘의 미션
+        <span id="targetCountBadge">총 0개</span>
+      </div>
+      <div id="targetListArea" class="target-list">
+        <!-- 목표 항목 동적 삽입 -->
+      </div>
+    </div>
+
+    <!-- 3. 상세 응답 제출 화면 -->
     <div id="screen-detail" class="screen">
       <div class="header-bar">
-        <button class="btn-back" onclick="showScreen('screen-main')">← 뒤로가기</button>
+        <button class="btn-back" onclick="showScreen('screen-main')">
+          <i class="fa-solid fa-chevron-left"></i>
+        </button>
+        <h3>기록하기</h3>
       </div>
 
       <div class="question-card">
-        <h3 id="detailTargetTitle">목표 제목</h3>
+        <span class="tag">TODAY MISSION</span>
+        <h4 id="detailTargetTitle">목표 제목</h4>
         <p id="detailQuestion">관리자 추가 질문 내용이 나타납니다.</p>
       </div>
 
+      <!-- 요청하신 3가지 대표 선택지 -->
       <div class="status-select">
-        <div id="btnStatusDone" class="status-btn" onclick="selectStatus('완료했어요!')">🟢 완료했어요</div>
-        <div id="btnStatusFail" class="status-btn" onclick="selectStatus('오늘은 못했어요')">🔴 못했어요</div>
+        <div id="btnStatusDone" class="status-btn" onclick="selectStatus('완벽실천')">
+          <i class="fa-solid fa-circle-check"></i>
+          <span>완벽실천</span>
+        </div>
+        <div id="btnStatusHalf" class="status-btn" onclick="selectStatus('조금아쉽')">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          <span>조금아쉽</span>
+        </div>
+        <div id="btnStatusFail" class="status-btn" onclick="selectStatus('내일실천')">
+          <i class="fa-solid fa-circle-xmark"></i>
+          <span>내일실천</span>
+        </div>
       </div>
 
-      <textarea id="answerInput" placeholder="답변을 입력하세요 (선택 사항)"></textarea>
+      <!-- 추가 질문 서술 및 필수 입력 안내 -->
+      <textarea id="answerInput" placeholder="추가 질문에 대한 대답을 작성해 주세요. (필수 입력 항목입니다)"></textarea>
 
-      <button class="btn-main" onclick="submitResponse()">제출하기</button>
+      <button class="btn-main" onclick="submitResponse()">
+        <i class="fa-solid fa-paper-plane"></i>
+        <span>제출하기</span>
+      </button>
     </div>
 
   </div>
@@ -188,71 +321,46 @@
     const db = firebase.database();
     const messaging = firebase.messaging();
 
-    // VAPID Key 정의
     const VAPID_KEY = "BIefkNza3itCRQ9WRPw51-b5H8ehkC8tQbcqI_YR5e97IqfD6w9TBOkp1X8A_BE7-vg14cBXAkIJyrwR_T-DZ48";
 
-    // FCM 토큰 발급 및 Firebase DB 저장 함수
     function requestAndSaveFcmToken(userCode) {
-      if (!('Notification' in window) || !('serviceWorker' in navigator)) {
-        console.warn('이 브라우저는 알림 또는 서비스 워커를 지원하지 않습니다.');
-        return;
-      }
+      if (!('Notification' in window) || !('serviceWorker' in navigator)) return;
 
       Notification.requestPermission().then((permission) => {
         if (permission === 'granted') {
           messaging.getToken({ vapidKey: VAPID_KEY }).then((currentToken) => {
             if (currentToken) {
-              console.log('발급된 FCM 토큰:', currentToken);
-              // DB의 Users/개인코드/fcmToken 경로에 저장
-              db.ref('Users/' + userCode + '/fcmToken').set(currentToken)
-                .then(() => console.log('DB에 FCM 토큰 저장 성공!'))
-                .catch((err) => console.error('DB 저장 실패:', err));
-            } else {
-              console.log('토큰을 가져올 수 없습니다. 권한을 확인하세요.');
+              db.ref('Users/' + userCode + '/fcmToken').set(currentToken);
             }
-          }).catch((err) => {
-            console.error('FCM 토큰 발급 중 오류:', err);
-          });
-        } else {
-          console.warn('알림 권한이 거부되었습니다.');
+          }).catch((err) => console.error('FCM 토큰 오류:', err));
         }
       });
     }
 
-    // 앱이 화면에 떠 있을 때(포그라운드) 관리자가 보낸 푸시 알림 수신
     messaging.onMessage((payload) => {
-      console.log('포그라운드 메시지 수신:', payload);
       const title = payload.notification ? payload.notification.title : '건강행동 실천 알림';
       const body = payload.notification ? payload.notification.body : '';
       
-      // 상단 시스템 알림 팝업 띄우기 (권한 허용 시)
       if (Notification.permission === 'granted') {
-        new Notification(title, {
-          body: body,
-          icon: './MHRL%20icon.png' // 앱 아이콘 경로
-        });
+        new Notification(title, { body: body, icon: './MHRL%20icon.png' });
       } else {
         alert(`[${title}]\n${body}`);
       }
     });
 
-    // 앱 상태 변수
     let currentUser = null;
     let currentTargets = {};
     let currentResponses = {};
     let selectedTargetKey = null;
-    let selectedStatus = '완료했어요!';
+    let selectedStatus = '완벽실천';
 
     const todayStr = new Date().toISOString().substring(0, 10);
 
-    // 초기화 (자동 로그인 확인 및 토큰 발급)
     window.onload = function() {
       const savedUser = localStorage.getItem('goalTrackUser');
       if (savedUser) {
         currentUser = JSON.parse(savedUser);
         loadMainPage();
-        
-        // 자동 로그인 시 FCM 토큰 발급 및 DB 저장
         if (currentUser && currentUser.code) {
           requestAndSaveFcmToken(currentUser.code);
         }
@@ -266,7 +374,6 @@
       document.getElementById(screenId).classList.add('active');
     }
 
-    // 1. 로그인
     function handleLogin() {
       const code = document.getElementById('loginCode').value.trim();
       const name = document.getElementById('loginName').value.trim();
@@ -274,7 +381,7 @@
       const birth = document.getElementById('loginBirth').value.trim();
 
       if (!code || !name || !phone || !birth) {
-        alert("모든 항목을 입력해 주세요.");
+        alert("모든 정보를 입력해 주세요.");
         return;
       }
 
@@ -290,13 +397,10 @@
           if (document.getElementById('autoLoginCheck').checked) {
             localStorage.setItem('goalTrackUser', JSON.stringify(user));
           }
-          
-          // 로그인 성공 시 FCM 토큰 발급 및 DB 저장
           requestAndSaveFcmToken(currentUser.code);
-
           loadMainPage();
         } else {
-          alert("입력하신 회원 정보가 일치하지 않습니다.");
+          alert("입력하신 정보가 일치하지 않습니다.");
         }
       });
     }
@@ -306,15 +410,13 @@
       location.reload();
     }
 
-    // 2. 메인 페이지 불러오기
     function loadMainPage() {
       showScreen('screen-main');
-      document.getElementById('welcomeText').innerText = `${currentUser.name}님, 오늘도 화이팅! 😊`;
+      document.getElementById('welcomeText').innerText = `${currentUser.name}님, 반가워요! 👋`;
       
       const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
       document.getElementById('todayDateText').innerText = new Date().toLocaleDateString('ko-KR', options);
 
-      // 목표 및 오늘 응답 데이터 읽기
       db.ref('Targets/' + currentUser.code).on('value', targetSnap => {
         currentTargets = targetSnap.val() || {};
         
@@ -325,68 +427,99 @@
       });
     }
 
-    // 기간 필터링 및 원형 프로그레스 바 업데이트
     function renderTargetsAndProgress() {
       const listArea = document.getElementById('targetListArea');
       listArea.innerHTML = '';
 
       let totalCount = 0;
-      let doneCount = 0;
+      let doneCount = 0; // 완벽실천
+      let halfCount = 0; // 조금아쉽
+      let failCount = 0; // 내일실천
 
       Object.keys(currentTargets).forEach(key => {
         const t = currentTargets[key];
-        
-        // 데이터 구조 호환 처리
         let title = typeof t === 'object' ? t.title : t;
         let startDate = typeof t === 'object' ? t.startDate : '';
         let endDate = typeof t === 'object' ? t.endDate : '';
         let active = typeof t === 'object' ? (t.active !== undefined ? t.active : true) : true;
 
-        // 기간 필터링
         if (!active) return;
         if (startDate && todayStr < startDate) return;
         if (endDate && todayStr > endDate) return;
 
         totalCount++;
 
-        const isDone = currentResponses[key] && currentResponses[key].status === '완료했어요!';
-        if (isDone) doneCount++;
+        const responseObj = currentResponses[key];
+        let statusStr = responseObj ? responseObj.status : '';
+        
+        // 기존 '완료했어요!' 레거시 데이터 호환성 보장
+        if (statusStr === '완료했어요!') statusStr = '완벽실천';
+        if (statusStr === '못했어요' || statusStr === '오늘은 못했어요') statusStr = '내일실천';
+
+        let iconSymbol = '<i class="fa-solid fa-minus"></i>';
+        let statusClass = '';
+        let statusText = '터치하여 기록하기';
+
+        if (statusStr === '완벽실천') {
+          doneCount++;
+          iconSymbol = '<i class="fa-solid fa-check"></i>'; // 체크
+          statusClass = 'status-done';
+          statusText = '완벽실천 완료!';
+        } else if (statusStr === '조금아쉽') {
+          halfCount++;
+          iconSymbol = '△'; // 세모
+          statusClass = 'status-half';
+          statusText = '조금아쉽 기록 완료';
+        } else if (statusStr === '내일실천') {
+          failCount++;
+          iconSymbol = '<i class="fa-solid fa-xmark"></i>'; // 엑스
+          statusClass = 'status-fail';
+          statusText = '내일실천 기록 완료';
+        }
 
         const div = document.createElement('div');
-        div.className = `target-item ${isDone ? 'completed' : ''}`;
-        div.onclick = () => openDetail(key, title, t.question || '추가 질문이 없습니다.');
+        div.className = `target-item ${statusClass}`;
+        div.onclick = () => openDetail(key, title, t.question || '오늘 목표 행동을 실천하셨나요?');
 
         div.innerHTML = `
-          <div class="target-info">
-            <h5>${title}</h5>
+          <div class="target-left">
+            <div class="status-icon-circle">
+              ${iconSymbol}
+            </div>
+            <div class="target-info">
+              <h5>${title}</h5>
+              <p>${statusText}</p>
+            </div>
           </div>
-          <span class="badge ${isDone ? 'badge-done' : 'badge-pending'}">
-            ${isDone ? '🟢 완료' : '⚪ 미완료'}
-          </span>
+          <i class="fa-solid fa-chevron-right" style="color: var(--text-sub); font-size: 0.85rem;"></i>
         `;
         listArea.appendChild(div);
       });
 
-      // 프로그레스 바 계산
-      const percent = totalCount > 0 ? Math.round((doneCount / totalCount) * 100) : 0;
+      // 프로그레스 바 계산 (완벽실천 100%, 조금아쉽 50% 반영)
+      const calculatedScore = doneCount + (halfCount * 0.5);
+      const percent = totalCount > 0 ? Math.round((calculatedScore / totalCount) * 100) : 0;
+      
       document.getElementById('circleProgress').setAttribute('stroke-dasharray', `${percent}, 100`);
       document.getElementById('progressPercent').innerText = `${percent}%`;
-      document.getElementById('progressSummary').innerText = `${totalCount}개 중 ${doneCount}개 완료`;
+      document.getElementById('progressSummary').innerText = `${doneCount}개 성공 · ${halfCount}개 보통 · ${failCount}개 실패`;
+      document.getElementById('targetCountBadge').innerText = `총 ${totalCount}개`;
     }
 
-    // 3. 질문 및 응답 제출 화면으로 이동
     function openDetail(key, title, question) {
       selectedTargetKey = key;
       document.getElementById('detailTargetTitle').innerText = title;
       document.getElementById('detailQuestion').innerText = question;
 
-      // 기존 응답이 있으면 채워넣기
       const existing = currentResponses[key];
       if (existing) {
-        selectStatus(existing.status);
+        let st = existing.status;
+        if (st === '완료했어요!') st = '완벽실천';
+        if (st === '못했어요' || st === '오늘은 못했어요') st = '내일실천';
+        selectStatus(st || '완벽실천');
         document.getElementById('answerInput').value = existing.answer || '';
       } else {
-        selectStatus('완료했어요!');
+        selectStatus('완벽실천');
         document.getElementById('answerInput').value = '';
       }
 
@@ -396,21 +529,32 @@
     function selectStatus(status) {
       selectedStatus = status;
       const btnDone = document.getElementById('btnStatusDone');
+      const btnHalf = document.getElementById('btnStatusHalf');
       const btnFail = document.getElementById('btnStatusFail');
 
-      if (status === '완료했어요!') {
+      btnDone.className = 'status-btn';
+      btnHalf.className = 'status-btn';
+      btnFail.className = 'status-btn';
+
+      if (status === '완벽실천') {
         btnDone.className = 'status-btn selected-success';
-        btnFail.className = 'status-btn';
-      } else {
-        btnDone.className = 'status-btn';
+      } else if (status === '조금아쉽') {
+        btnHalf.className = 'status-btn selected-warning';
+      } else if (status === '내일실천') {
         btnFail.className = 'status-btn selected-fail';
       }
     }
 
-    // 4. Responses 노드에 저장
     function submitResponse() {
       const answer = document.getElementById('answerInput').value.trim();
       const targetTitle = document.getElementById('detailTargetTitle').innerText;
+
+      // 추가 질문 서술 필수 검증(Validation)
+      if (!answer) {
+        alert("추가 질문에 대한 대답을 꼭 입력해 주세요!");
+        document.getElementById('answerInput').focus();
+        return;
+      }
 
       const saveData = {
         status: selectedStatus,
@@ -423,7 +567,7 @@
         if (err) {
           alert("저장 실패: " + err);
         } else {
-          alert("✅ 제출이 완료되었습니다!");
+          alert("✅ 제출되었습니다!");
           showScreen('screen-main');
         }
       });
